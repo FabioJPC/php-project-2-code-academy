@@ -16,7 +16,7 @@
 
         public function showActionMessage(string $string): void 
         {
-            echo "\n" . $string;
+            echo "\n" . $string . "\n";
             $this->logger->add("[LOG]: $string");
             $this->wait(1300);
         } 

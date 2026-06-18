@@ -13,7 +13,7 @@ cd php-project-2-code-academy
 
 ### Build and run the container
 ```bash 
-docker-compose up -d --build
+docker compose up -d --build
 ```
 ### Run the Game
 ```bash
