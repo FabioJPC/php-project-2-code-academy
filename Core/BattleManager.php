@@ -81,43 +81,47 @@
             while(!$successfullAction) 
             {
                 $this->renderer->showBattleOptions($isSpecialReady);
-                $option = $this->input->readInteger();
                 
-                switch($option) 
-                {
-                    case 1 :
-                        $damage = $currentCharacter->attack($targetCharacter);
-                        $successfullAction = true;
+                try {
+                    $option = $this->input->readInteger();
+                
+                    switch($option) 
+                    {
+                        case 1 :
+                            $damage = $currentCharacter->attack($targetCharacter);
+                            $successfullAction = true;
 
-                        $this->renderer->showActionMessage(
-                            "{$currentPlayer->getName()} causou $damage dano em {$targetPlayer->getName()}"
-                        );
-                        break;
+                            $this->renderer->showActionMessage(
+                                "{$currentPlayer->getName()} causou $damage dano em {$targetPlayer->getName()}"
+                            );
+                            break;
 
-                    case 2 : 
-                        $currentCharacter->defend();
-                        $successfullAction = true;
+                        case 2 : 
+                            $currentCharacter->defend();
+                            $successfullAction = true;
 
-                        $this->renderer->showActionMessage(
-                            "{$currentPlayer->getName()} mudou para o modo defesa."
-                        );
-                        break;
+                            $this->renderer->showActionMessage(
+                                "{$currentPlayer->getName()} mudou para o modo defesa."
+                            );
+                            break;
 
-                    case 3:
-                        try {
+                        case 3:
                             $damage = $currentCharacter->useSpecial($targetCharacter);
                             $successfullAction = true;
 
                             $this->renderer->showActionMessage(
                                 "{$currentPlayer->getName()} usou o especial e causou $damage dano em {$targetPlayer->getName()}."
                             );
-                        } catch (InvalidInputException $e) {
-                            ExceptionHandler::handle($e);
 
-                            $this->renderer->wait(1500);
-                        }
-                        break;
-                };
+                            break;
+
+                        default:
+                            throw new InvalidInputException("Opção inválida.");
+
+                    };
+                } catch (InvalidInputException $e) {
+                    ExceptionHandler::handle($e);
+                }
             }
 
             $currentCharacter->chargeSpecial();
